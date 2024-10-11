@@ -1,0 +1,20 @@
+#!/bin/sh
+
+plugins_dir="/usr/share/zsh/plugins"
+
+dep_ch() {
+    for dep; do
+      command -v "$dep" >/dev/null || sudo apt install "$dep" -y
+    done
+}
+
+dep_ch "fzf" "zsh" "figlet"
+
+test -d "$plugins_dir" || mkdir "$plugins_dir"
+
+git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git "$plugins_dir/zsh-syntax-highlighting"
+git clone --depth 1 https://github.com/Aloxaf/fzf-tab.git "$plugins_dir/fzf-tab"
+
+cp .zshrc $HOME/.zshrc
+
+chsh -s $(which zsh)
